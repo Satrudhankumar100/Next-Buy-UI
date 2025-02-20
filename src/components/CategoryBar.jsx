@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
@@ -9,6 +9,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import baseUrl from '../utils/baseUrl';
+import axios from 'axios';
 
 
 const CategoryBar = () => {
@@ -20,6 +22,19 @@ const CategoryBar = () => {
     setOpen(newOpen);
   };
 
+  const GetAllCategory = async()=>{
+    try{
+      const response= await axios.get(`${baseUrl}/product/all-category`)
+      setCategory(prev=>([...prev,response.data.data]))
+    }catch(err){
+      console.log(err)
+    }
+
+  }
+
+  useEffect(()=>{
+    GetAllCategory();
+  },[])
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>

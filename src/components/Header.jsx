@@ -19,6 +19,8 @@ import { FormControl, InputLabel, Select } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BsCartPlus } from 'react-icons/bs';
+import axios from 'axios';
+import baseUrl from '../utils/baseUrl';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -66,6 +68,7 @@ export default function Header() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [category, setCategory] = useState("All");
+    const [keyword,setKeyword] = useState()
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -162,6 +165,16 @@ export default function Header() {
             </MenuItem>
         </Menu>
     );
+
+    const handleSearchBtn = async ()=>{
+            try{
+                const response=  await axios.get(`${baseUrl}/product/search-prod?keyword=${keyword}`)
+                console.log(response.data)
+            }catch(err){
+                console.log(err)
+            }
+
+    }
 
     return (
         <Box sx={{ flexGrow: 1, position: 'sticky', top: 0, zIndex: 50 }}>

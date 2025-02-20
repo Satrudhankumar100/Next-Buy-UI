@@ -8,23 +8,25 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import { IoStarHalfOutline } from 'react-icons/io5';
 
-export default function Cards() {
+export default function Cards({product}) {
   return (
     <Card sx={{ maxWidth: 300 }}>
       <Box >
 
-        <img style={{width:'100%', height:300}} src="https://img.freepik.com/free-photo/vertical-shot-concentrated-businessman-listening-carefully-with-crossed-hands_181624-29443.jpg" />
+        <img style={{width:'100%', height:300}} src={product.image} />
       </Box>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {product?.name}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {product?.description}
         </Typography>
         <Typography sx={{display:'flex',gap:1}}>
-          <span>Rating:</span> <span style={{display:'flex', alignItems:'center', gap:2}}>4.3<IoStarHalfOutline color='#fa2' size={22}  /></span>
+          <span>Price:</span> <span style={{display:'flex', alignItems:'center', gap:2}}>{product?.price}<IoStarHalfOutline color='#fa2' size={22}  /></span>
+        </Typography>
+        <Typography sx={{display:'flex',gap:1}}>
+          <span>Rating:</span> <span style={{display:'flex', alignItems:'center', gap:2}}>{product?.rating}<IoStarHalfOutline color='#fa2' size={22}  /></span>
         </Typography>
       </CardContent>
       <CardActions sx={{display:'flex', justifyContent:'space-between'}}>

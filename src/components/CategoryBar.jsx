@@ -13,7 +13,7 @@ import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
 
 
-const CategoryBar = () => {
+const CategoryBar = ({searchByCategory}) => {
 
   const [category, setCategory] = useState(["WATCH", "LAPTOP", "ELECTRONICS", "T-SHIRT", ""])
   const [open, setOpen] = React.useState(false);
@@ -71,7 +71,10 @@ const CategoryBar = () => {
           </Drawer>
         </div>
         {category.map((data, index) => {
-          return (<Typography key={index} sx={{ color: '#fff',fontWeight:'bold', cursor: 'pointer', paddingX: 4, paddingY: 1, '&:hover': { border: '1px solid white' } }} >{data}</Typography>)
+          return (<div onClick={()=>searchByCategory(data)}>
+
+          <Typography key={index}  sx={{ color: '#fff',fontWeight:'bold', cursor: 'pointer', paddingX: 4, paddingY: 1, '&:hover': { border: '1px solid white' } }} >{data}</Typography>
+          </div>)
         })}
 
       </Box>

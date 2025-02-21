@@ -175,6 +175,7 @@ export default function Header() {
             }
 
     }
+    console.log(keyword)
 
     return (
         <Box sx={{ flexGrow: 1, position: 'sticky', top: 0, zIndex: 50 }}>
@@ -260,7 +261,7 @@ export default function Header() {
                                 </SearchIconWrapper>
                             </Box>
 
-                            <StyledInputBase placeholder="Search…" sx={{ color: '#000' }} inputProps={{ "aria-label": "search" }} />
+                            <StyledInputBase placeholder="Search…" value={keyword} onChange={(e)=>setKeyword(e.target.value)} sx={{ color: '#000' }} inputProps={{ "aria-label": "search" }} />
                         </Search>
                     </Box>
 

@@ -23,7 +23,7 @@ export default function Cards({product}) {
           {product?.description}
         </Typography>
         <Typography sx={{display:'flex',gap:1}}>
-          <span>Price:</span> <span style={{display:'flex', alignItems:'center', gap:2}}>{product?.price}<IoStarHalfOutline color='#fa2' size={22}  /></span>
+          <span>Price:</span> <span style={{display:'flex', alignItems:'center', gap:2}}>{product?.prodPrice}</span>
         </Typography>
         <Typography sx={{display:'flex',gap:1}}>
           <span>Rating:</span> <span style={{display:'flex', alignItems:'center', gap:2}}>{product?.rating}<IoStarHalfOutline color='#fa2' size={22}  /></span>

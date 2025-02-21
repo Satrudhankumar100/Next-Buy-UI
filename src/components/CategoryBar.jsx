@@ -15,17 +15,22 @@ import axios from 'axios';
 
 const CategoryBar = ({searchByCategory}) => {
 
-  const [category, setCategory] = useState(["WATCH", "LAPTOP", "ELECTRONICS", "T-SHIRT", ""])
+  const [category, setCategory] = useState([])
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-
+       console.log(category)
   const GetAllCategory = async()=>{
     try{
       const response= await axios.get(`${baseUrl}/product/all-category`)
-      setCategory(prev=>([...prev,response.data.data]))
+    console.log();
+      
+     if(response.data.data.indexOf("T-Shirt"))
+      response.data.data.unshift("T-Shirt")
+      setCategory(response.data.data);
+    
     }catch(err){
       console.log(err)
     }

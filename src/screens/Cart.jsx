@@ -8,7 +8,7 @@ import baseUrl from '../utils/baseUrl';
 const Cart = () => {
 
     const [openBuyBox, setOpenBuyBox] = useState(false);
-    const [carts, setCarts] = useState([]);
+    const [mycarts, setMyCarts] = useState([]);
     const handleClose = () => {
         setOpenBuyBox(false);
     }
@@ -16,7 +16,10 @@ const Cart = () => {
     const getListOfCart = async () => {
         try {
             const response = await axios.get(`${baseUrl}/cart/find-all-cart/${2}`) //add userId
-            setCarts(response.data);
+            const data= response.data
+            console.log(response.data);
+            setMyCarts(data);
+           
         } catch (err) {
             console.log(err)
         }
@@ -25,10 +28,10 @@ const Cart = () => {
     useEffect(()=>{
         getListOfCart();
     },[])
-
+  
     const removeCart = async (cartId)=>{
         try {
-            const response = await axios.get(`${baseUrl}/cart/find-all-cart/${cartId}`) //add userId
+            const response = await axios.delete(`${baseUrl}/cart/remove-cart/${cartId}`) //add userId
             console.log(response.data);
             getListOfCart();
         } catch (err) {
@@ -36,15 +39,18 @@ const Cart = () => {
         }
     }
 
-
+ 
     return (
         <>
             <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2, boxSizing: 'border-box' }}>
                 <Box sx={{ display: 'flex', flexGrow: 1, boxSizing: 'border-box', boxShadow: 10, padding: 2, gap: 2 }}>
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flexGrow: 0.5, maxHeight: '90vh', overflowY: 'auto' }}>
-                        {carts.map((cart, index) => {
-                            <CartCards cart={cart} removeCart={removeCart} />
+                        {mycarts.map((data, index) => {
+                          
+                                
+                               return  <CartCards cart={data} removeCart={removeCart} /> 
+                            
 
                         })}
 

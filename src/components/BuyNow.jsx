@@ -8,6 +8,9 @@ import { CgClose } from 'react-icons/cg';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 import AddAddress from './AddAddress';
+import axios from 'axios';
+import { customerUrl } from '../utils/baseUrl';
+import { FaRegEdit } from 'react-icons/fa';
 
 const style = {
     position: 'absolute',
@@ -26,7 +29,7 @@ const style = {
 
 const BuyNow = ({ handleClose, status }) => {
 
- const [user, setUser] = useState({
+ const [address, setaddress] = useState({
     country: '',
     state: '',
     city: '',
@@ -38,8 +41,18 @@ const BuyNow = ({ handleClose, status }) => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-          setUser(prev => ({ ...prev, [id]: value }));
+          setaddress(prev => ({ ...prev, [id]: value }));
       };
+
+    const handleSaveAddress = async ()=>{
+         try{
+            const response = await axios.post(`${customerUrl}/user/save-addr/${52}`,address) //add user id
+            console.log(response.data)
+            setAddressEdit(false);
+         }catch(err){
+            console.log(err)
+         }
+    }
 
    
 
@@ -64,7 +77,7 @@ const BuyNow = ({ handleClose, status }) => {
                     
                     <Box sx={style}>
                       {  isAddressEdit?
-                             <AddAddress user={user} handleChange={handleChange} handleClose={handleClose} />:
+                             <AddAddress user={address} handleChange={handleChange} handleClose={handleClose} handleSaveAddress ={handleSaveAddress} />:
                              <>
                              <Box sx={{ display: 'flex', gap: 2 }}>
                                  <Typography>Email id:</Typography>
@@ -74,7 +87,8 @@ const BuyNow = ({ handleClose, status }) => {
                                  <Typography>Delivery Address:</Typography>
                              </Box>
                              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                <Typography>Patna-8000014, Bihar, India</Typography>                 
+                                <Typography>Patna-8000014, Bihar, India</Typography>  
+                                <Button onClick={()=>setAddressEdit(true)}><FaRegEdit /></Button>               
                              </Box>
                              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                  <Box>

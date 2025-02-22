@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import React from 'react'
 
-const AddAddress = ({ user, handleChange, handleClose }) => {
+const AddAddress = ({ user, handleChange, handleClose, handleSaveAddress }) => {
     return (
         <>
             <Box sx={{ display: 'flex', gap: 2 }}>
@@ -25,7 +25,7 @@ const AddAddress = ({ user, handleChange, handleClose }) => {
                     </Button>
                 </Box>
                 <Box>
-                    <Button variant="contained" color="primary" sx={{ background: '#218b3b' }} size="large" fullWidth onClick={() => setOpenBuyBox(true)} >
+                    <Button variant="contained" color="primary" sx={{ background: '#218b3b' }} size="large" fullWidth onClick={() => handleSaveAddress()} >
                         Save
                     </Button>
                 </Box>

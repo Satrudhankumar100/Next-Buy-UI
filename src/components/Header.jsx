@@ -1,4 +1,4 @@
-import { use, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -68,7 +68,8 @@ export default function Header() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [category, setCategory] = useState("All");
-    const [keyword,setKeyword] = useState()
+    const [keyword, setKeyword] = useState();
+    const [cartItmes,setCartItmes] = useState(0);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -166,15 +167,30 @@ export default function Header() {
         </Menu>
     );
 
-    const handleSearchBtn = async ()=>{
-            try{
-                const response=  await axios.get(`${baseUrl}/product/search-prod?keyword=${keyword}`)
-                console.log(response.data)
-            }catch(err){
-                console.log(err)
-            }
+    const handleSearchBtn = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/product/search-prod?keyword=${keyword}`)
+            console.log(response.data)
+        } catch (err) {
+            console.log(err)
+        }
 
     }
+
+    const handleCartCount = async()=>{
+        try {
+            const response = await axios.get(`${baseUrl}/cart/qnty-cart/${2}`)//add user id here
+            console.log("cart items-"+ response.data);
+            setCartItmes(response?.data);
+        } catch (err) {
+            console.log(err)
+            setCartItmes(0);
+        }
+    }
+
+    useEffect(()=>{
+        handleCartCount();
+    },[])
     console.log(keyword)
 
     return (
@@ -184,26 +200,27 @@ export default function Header() {
 
                     {/****************************  Logo and company Name ***********************/}
 
+                    <Link to={"/home"} style={{textDecoration:'none', color:'white'}}>
+                        <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', alignItems: 'center' }}>
 
-                    <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', alignItems: 'center' }}>
-
-                        <motion.div
-                            animate={{ x: [0, 20, 0] }} // Moves 100px right, then back
-                            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                            <FaCartShopping size={28} />
-                        </motion.div>
-                        <Typography
-                            variant="h4"
-                            noWrap
-                            component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 'bolder' }}
-                        >
-                            Next-Buy
-                        </Typography>
+                            <motion.div
+                                animate={{ x: [0, 20, 0] }} // Moves 100px right, then back
+                                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                                <FaCartShopping size={28} />
+                            </motion.div>
+                            <Typography
+                                variant="h4"
+                                noWrap
+                                component="div"
+                                sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 'bolder' }}
+                            >
+                                Next-Buy
+                            </Typography>
 
 
-                    </Box>
+                        </Box>
+                    </Link>
 
                     <Box sx={{ flexGrow: 1 }} />
 
@@ -261,7 +278,7 @@ export default function Header() {
                                 </SearchIconWrapper>
                             </Box>
 
-                            <StyledInputBase placeholder="Search…" value={keyword} onChange={(e)=>setKeyword(e.target.value)} sx={{ color: '#000' }} inputProps={{ "aria-label": "search" }} />
+                            <StyledInputBase placeholder="Search…" value={keyword} onChange={(e) => setKeyword(e.target.value)} sx={{ color: '#000' }} inputProps={{ "aria-label": "search" }} />
                         </Search>
                     </Box>
 
@@ -271,8 +288,8 @@ export default function Header() {
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <Link to={"/cart"}>
                             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={4} color="error">
-                                    <BsCartPlus color='white'  />
+                                <Badge badgeContent={cartItmes} color="error">
+                                    <BsCartPlus color='white' />
                                 </Badge>
                             </IconButton>
                         </Link>

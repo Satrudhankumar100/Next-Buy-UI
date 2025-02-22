@@ -44,25 +44,15 @@ const CategoryBar = ({searchByCategory}) => {
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-                <ListItemText primary={text} />
+        {category.map((text, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton onClick={()=>searchByCategory(text)}>
+                <ListItemText primary={text}  />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-               <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+   </Box>
   );
 
   return (
@@ -75,7 +65,8 @@ const CategoryBar = ({searchByCategory}) => {
             {DrawerList}
           </Drawer>
         </div>
-        {category.map((data, index) => {
+        {category.filter((data,index)=>index<10).map((data, index) => {
+
           return (<div onClick={()=>searchByCategory(data)}>
 
           <Typography key={index}  sx={{ color: '#fff',fontWeight:'bold', cursor: 'pointer', paddingX: 4, paddingY: 1, '&:hover': { border: '1px solid white' } }} >{data}</Typography>

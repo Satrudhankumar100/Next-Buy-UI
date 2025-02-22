@@ -7,10 +7,22 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import { IoStarHalfOutline } from 'react-icons/io5';
+import axios from 'axios';
+import baseUrl from '../utils/baseUrl';
 
 export default function Cards({product}) {
+
+  const handleAddToCart = async (prodId)=>{
+        try{
+          const response = await axios.post(`${baseUrl}/cart/add-cart/${2}`,{prodId:prodId})//add user id
+            console.log(response.data);
+        }catch(err){
+          console.log(err)
+        }
+  }
+
   return (
-    <Card sx={{ maxWidth: 300 }}>
+    <Card sx={{ maxWidth: 300 }} key={product?.prodId}>
       <Box >
 
         <img style={{width:'100%', height:300}} src={product.image} />
@@ -32,7 +44,7 @@ export default function Cards({product}) {
       <CardActions sx={{display:'flex', justifyContent:'space-between'}}>
        
         <Button  sx={{background:'#6af', color:'#fff'}}>Read More</Button>
-        <Button  sx={{background:'#f66', color:'#fff'}}>Add To Card</Button>
+        <Button  sx={{background:'#f66', color:'#fff'}} onClick={()=>handleAddToCart(product?.prodId)}>Add To Card</Button>
 
       </CardActions>
       

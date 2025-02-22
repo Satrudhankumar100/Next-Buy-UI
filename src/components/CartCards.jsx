@@ -4,21 +4,22 @@ import { CiSquarePlus } from 'react-icons/ci'
 import { MdDeleteForever } from 'react-icons/md'
 
 const CartCards = ({ cart, removeCart }) => {
-
+   
+    const {cartId,cartQnty,userId,prod} = cart
     
-
+        console.log("cart"+cart)
     return (
         <>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 10, alignSelf: 'start' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                     <Box>
-                        <img style={{ height: 150 }} src="https://img.freepik.com/free-photo/vertical-shot-concentrated-businessman-listening-carefully-with-crossed-hands_181624-29443.jpg" />
+                        <img style={{ height: 150 }} src={prod.image} />
                     </Box>
                     <Box>
-                        <Typography sx={{ fontSize: 36, fontWeight: 'bold' }} >Gray T-Shirt</Typography>
-                        <Typography>Gray T-Shirt</Typography>
-                        <Typography><span>Rating:</span><span>4</span></Typography>
-                        <Typography><span>Price:</span><span>400</span></Typography>
+                        <Typography sx={{ fontSize: 36, fontWeight: 'bold' }} >{prod.name}</Typography>
+                        <Typography>{prod.category}</Typography>
+                        <Typography><span>Rating:</span><span>{prod.rating}</span></Typography>
+                        <Typography><span>Price:</span><span>{prod.prodPrice}</span></Typography>
                     </Box>
                 </Box>
 
@@ -26,7 +27,7 @@ const CartCards = ({ cart, removeCart }) => {
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', fontSize: 40, height: 30, width: 30 }}>
                         <Typography sx={{ fontSize: 40, color: '#f66' }}>-</Typography>
                     </div>
-                    <input type='text' value={1} style={{ width: 48, height: 30, textAlign: 'center', border: '1px solid gray' }} />
+                    <input type='text' value={cartQnty}  style={{ width: 48, height: 30, textAlign: 'center', border: '1px solid gray' }} />
 
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', fontSize: 40, height: 30, width: 30 }}>
                         <Typography sx={{ fontSize: 40, color: '#218b3b' }}>+</Typography>
@@ -34,7 +35,7 @@ const CartCards = ({ cart, removeCart }) => {
                 </Box>
 
                 <Box sx={{ cursor: 'pointer' }}>
-                    <Button onClick={()=>removeCart(cart.cartId)}>
+                    <Button onClick={()=>removeCart(cartId)}>
                         <MdDeleteForever size={30} color='#f00' />
                     </Button>
                 </Box>

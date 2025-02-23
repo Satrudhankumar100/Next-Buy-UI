@@ -3,7 +3,8 @@ import CartCards from '../components/CartCards'
 import { Box, Button, Typography } from '@mui/material'
 import BuyNow from '../components/BuyNow';
 import axios from 'axios';
-import baseUrl, { orderUrl } from '../utils/baseUrl';
+import baseUrl, { customerUrl, orderUrl } from '../utils/baseUrl';
+import { getUserId } from '../utils/GetUserId';
 
 const Cart = () => {
 
@@ -11,13 +12,25 @@ const Cart = () => {
     const [mycarts, setMyCarts] = useState([]);
     const [myAmount, setMyAmount] = useState({ productAmount: 0, gstTax: 0, totalAmount: 0 });
     const [flag, setFlag] = useState(false);
+    const [address, setaddress] = useState({
+        country: '',
+        state: '',
+        city: '',
+        pincode: ''
+        
+      });
+    
+      const [isAddressEdit,setAddressEdit] = useState(false);
+
+
+
     const handleClose = () => {
         setOpenBuyBox(false);
     }
 
     const getListOfCart = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/cart/find-all-cart/${2}`) //add userId
+            const response = await axios.get(`${baseUrl}/cart/find-all-cart/${getUserId}`) //add userId
             const data = response.data
             console.log(response.data);
             setMyCarts(data);
@@ -29,7 +42,7 @@ const Cart = () => {
 
     const getAmountData = async () => {
         try {
-            const response = await axios.get(`${orderUrl}/payment/get-total-prod/${2}`) //add userId
+            const response = await axios.get(`${orderUrl}/payment/get-total-prod/${getUserId}`) //add userId
             const data = response.data
             console.log(response.data);
             if (data.length == 0) setMyCarts([])
@@ -65,13 +78,32 @@ const Cart = () => {
 
     const handleQntyValue = async (e, cartId) => {
         try {
-            const response = await axios.delete(`${baseUrl}/cart/remove-cart/${cartId}`) //add userId
+            const response = await axios.delete(`${baseUrl}/cart/update-cart-qnty`, { cartId: cartId, cartQnty: e.traget.value }) //add userId
             console.log(response.data);
             setFlag(!flag);
         } catch (err) {
             console.log(err)
         }
     }
+
+    const handleProceedToBuy = async ()=>{
+        try{
+            const response = await axios.get(`${customerUrl}/user/find-addr/${getUserId}`)
+            console.log(response.data);
+            if(response.data?.length==0){
+                 setAddressEdit(true);
+                 return
+            }
+            setAddressEdit(false); 
+            setaddress(response.data[response.data.length-1])
+    
+        }catch(err){
+            console.log(err)
+           
+            
+        }
+    }
+    
 
     useEffect(() => {
         getListOfCart();
@@ -88,6 +120,7 @@ const Cart = () => {
         }
     }
 
+   
 
     return (
         <>
@@ -134,8 +167,8 @@ const Cart = () => {
                             </Box>
 
                             <Box>
-                                <Button variant="contained" color="primary" sx={{ background: '#218b3b' }} size="large" fullWidth onClick={() => setOpenBuyBox(true)} >
-                                    Buy Now
+                                <Button variant="contained" color="primary" sx={{ background: '#218b3b' }} size="large" fullWidth onClick={() => {setOpenBuyBox(true); handleProceedToBuy();}} >
+                                   Proceed to Buy Now
                                 </Button>
                             </Box>
 
@@ -143,7 +176,7 @@ const Cart = () => {
                     </Box>
                 </Box>
             </Box>
-            <BuyNow handleClose={handleClose} status={openBuyBox} />
+            <BuyNow handleClose={handleClose} status={openBuyBox} address={address} isAddressEdit={isAddressEdit} setAddressEdit={setAddressEdit} setaddress={setaddress} />
         </>
     )
 }

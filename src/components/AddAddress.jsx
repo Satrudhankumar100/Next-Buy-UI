@@ -1,12 +1,13 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import React from 'react'
+import { getUserEmail } from '../utils/GetUserId'
 
 const AddAddress = ({ user, handleChange, handleClose, handleSaveAddress }) => {
     return (
         <>
             <Box sx={{ display: 'flex', gap: 2 }}>
                 <Typography>Email id:</Typography>
-                <Typography sx={{ fontSize: 14 }}>abc@gmail.com</Typography>
+                <Typography sx={{ fontSize: 14 }}>{getUserEmail}</Typography>
             </Box>
             <Box>
                 <Typography>Add Delivery Address:</Typography>

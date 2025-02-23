@@ -17,15 +17,15 @@ const Login = () => {
       try{
         const response = await axios.post(`${customerUrl}/user/login-user`,user)
         console.log(response.data)
-        signIn({
-          authState:({
-            token:'25123521452562',
-            expiresIn:36000,
-            tokenType:"Bearer",
-            authState:response.data
-          })
-        })
-
+        if(signIn({
+          auth: {
+              token: 'ey....mA',
+              type: 'Bearer'
+          },
+          userState: response.data.user
+      }))
+        localStorage.setItem("userId",response.data.user.userId)
+        localStorage.setItem("userEmail",response.data.user.userEmail)
         navigate("/order")
       }catch(err){
         console.log(err)

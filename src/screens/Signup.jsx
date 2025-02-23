@@ -6,6 +6,7 @@ import {
 import { FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
 import baseUrl, { customerUrl } from "../utils/baseUrl";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [user, setUser] = useState({

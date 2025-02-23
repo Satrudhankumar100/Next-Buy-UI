@@ -3,9 +3,11 @@ import React from 'react'
 import { CiSquarePlus } from 'react-icons/ci'
 import { MdDeleteForever } from 'react-icons/md'
 
-const CartCards = ({ cart, removeCart }) => {
+const CartCards = ({ cart, removeCart,increment,decrement,qntyValue  }) => {
    
     const {cartId,cartQnty,userId,prod} = cart
+
+    
     
         console.log("cart"+cart)
     return (
@@ -25,12 +27,12 @@ const CartCards = ({ cart, removeCart }) => {
 
                 <Box sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center', gap: 2 }}>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', fontSize: 40, height: 30, width: 30 }}>
-                        <Typography sx={{ fontSize: 40, color: '#f66' }}>-</Typography>
+                        <Button onClick={()=>decrement(cartId)}> <Typography sx={{ fontSize: 40, color: '#f66' }}>-</Typography></Button>
                     </div>
-                    <input type='text' value={cartQnty}  style={{ width: 48, height: 30, textAlign: 'center', border: '1px solid gray' }} />
+                    <input type='text' value={cartQnty} onChange={(e)=>qntyValue(e,cartId)}  style={{ width: 48, height: 30, textAlign: 'center', border: '1px solid gray' }} />
 
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', fontSize: 40, height: 30, width: 30 }}>
-                        <Typography sx={{ fontSize: 40, color: '#218b3b' }}>+</Typography>
+                       <Button onClick={()=>increment(cartId)}><Typography sx={{ fontSize: 40, color: '#218b3b' }}>+</Typography></Button>
                     </div>
                 </Box>
 

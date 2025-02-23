@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import { FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
-import baseUrl from "../utils/baseUrl";
+import baseUrl, { customerUrl } from "../utils/baseUrl";
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -15,6 +15,7 @@ const Signup = () => {
     userPwd: '',
     userPhone: ''
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value, name } = e.target;
@@ -29,8 +30,9 @@ const Signup = () => {
     console.log(user);
 
     try{
-      const response = await axios.post(`${baseUrl}/user/save-user`,user)
+      const response = await axios.post(`${customerUrl}/user/save-user`,user)
       console.log(response.data);
+      navigate("/login")
     }catch(err){
       console.log(err)
     }

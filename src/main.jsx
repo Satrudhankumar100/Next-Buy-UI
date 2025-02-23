@@ -11,7 +11,7 @@ const store = createStore({
   authName:'_auth',
   authType:'localstorage',
   cookieDomain: window.location.hostname,
-  cookieSecure: window.location.protocol === 'https:',
+  cookieSecure: false,
 });
 
 createRoot(document.getElementById('root')).render(

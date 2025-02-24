@@ -9,12 +9,13 @@ import { Box } from '@mui/material';
 import { IoStarHalfOutline } from 'react-icons/io5';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
+import { getUserId } from '../utils/GetUserId';
 
 export default function Cards({product}) {
 
   const handleAddToCart = async (prodId)=>{
         try{
-          const response = await axios.post(`${baseUrl}/cart/add-cart/${2}`,{prodId:prodId})//add user id
+          const response = await axios.post(`${baseUrl}/cart/add-cart/${getUserId}`,{prodId:prodId})//add user id
             console.log(response.data);
         }catch(err){
           console.log(err)

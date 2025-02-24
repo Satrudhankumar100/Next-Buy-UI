@@ -21,6 +21,7 @@ import { motion } from 'framer-motion';
 import { BsCartPlus } from 'react-icons/bs';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
+import { getUserId } from '../utils/GetUserId';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -178,8 +179,10 @@ export default function Header() {
     }
 
     const handleCartCount = async()=>{
+        
+      
         try {
-            const response = await axios.get(`${baseUrl}/cart/qnty-cart/${2}`)//add user id here
+            const response = await axios.get(`${baseUrl}/cart/qnty-cart/${getUserId}`)//add user id here
             console.log("cart items-"+ response.data);
             setCartItmes(response?.data);
         } catch (err) {

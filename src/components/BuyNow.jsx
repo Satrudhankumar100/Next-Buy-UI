@@ -13,6 +13,7 @@ import { customerUrl } from '../utils/baseUrl';
 import { FaRegEdit } from 'react-icons/fa';
 import { getUserId } from '../utils/GetUserId';
 import { getUserEmail } from '../utils/GetUserId';
+import RazorpayConfig from './RazorpayConfig';
 
 const style = {
     position: 'absolute',
@@ -93,9 +94,9 @@ const BuyNow = ({ handleClose, status,address,isAddressEdit, setAddressEdit,seta
                                      </Button>
                                  </Box>
                                  <Box>
-                                     <Button variant="contained" color="primary" sx={{ background: '#218b3b' }} size="large" fullWidth onClick={() => setOpenBuyBox(true)} >
-                                         Buy
-                                     </Button>
+                                    
+                                         <RazorpayConfig />
+                                   
                                  </Box>
                              </Box>
                          </>

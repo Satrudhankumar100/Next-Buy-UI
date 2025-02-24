@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from 'react';
+import {  useContext, useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -22,6 +22,7 @@ import { BsCartPlus } from 'react-icons/bs';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
 import { getUserId } from '../utils/GetUserId';
+import { SerachContext } from '../App';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -69,7 +70,7 @@ export default function Header() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [category, setCategory] = useState("All");
-    const [keyword, setKeyword] = useState();
+    const {keywords, setKeyword} = useContext(SerachContext);
     const [cartItmes,setCartItmes] = useState(0);
 
     const isMenuOpen = Boolean(anchorEl);
@@ -168,15 +169,8 @@ export default function Header() {
         </Menu>
     );
 
-    const handleSearchBtn = async () => {
-        try {
-            const response = await axios.get(`${baseUrl}/product/search-prod?keyword=${keyword}`)
-            console.log(response.data)
-        } catch (err) {
-            console.log(err)
-        }
-
-    }
+   
+    
 
     const handleCartCount = async()=>{
         
@@ -194,7 +188,7 @@ export default function Header() {
     useEffect(()=>{
         handleCartCount();
     },[])
-    console.log(keyword)
+  
 
     return (
         <Box sx={{ flexGrow: 1, position: 'sticky', top: 0, zIndex: 50 }}>
@@ -281,7 +275,7 @@ export default function Header() {
                                 </SearchIconWrapper>
                             </Box>
 
-                            <StyledInputBase placeholder="Search…" value={keyword} onChange={(e) => setKeyword(e.target.value)} sx={{ color: '#000' }} inputProps={{ "aria-label": "search" }} />
+                            <StyledInputBase placeholder="Search…" value={keywords} onChange={(e) => setKeyword(e.target.value)} sx={{ color: '#000' }} inputProps={{ "aria-label": "search" }} />
                         </Search>
                     </Box>
 

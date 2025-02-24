@@ -1,15 +1,19 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import CategoryBar from '../components/CategoryBar'
-import { Box, Typography } from '@mui/material'
+import { Box, debounce, Typography } from '@mui/material'
 import Cards from '../components/Cards'
 import axios from 'axios'
 import baseUrl from '../utils/baseUrl'
+import { SerachContext } from '../App'
+import _ from 'lodash'
+
 
 
 const Home = () => {
 
       const [products, setProducts] = useState([])
-
+      const { keywords, setKeyword } = useContext(SerachContext);
+      console.log(keywords);
       const searchByCategory = async(category)=>{
         console.log(category)
 
@@ -34,6 +38,31 @@ const Home = () => {
         }
     
       }
+
+      const handleSearchBtn = async (query) => {
+        try {
+          
+            const response = await axios.get(`${baseUrl}/product/search-prod?keyword=${query}`);
+            console.log(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    
+
+    // Debounce function to delay API call
+    const debouncedSearch = _.debounce(handleSearchBtn, 500); // 500ms delay
+    
+    useEffect(() => {
+     
+        if (keywords.trim() !== "") {
+            debouncedSearch(keywords);
+        }
+        else  GetProducts();
+        return () => debouncedSearch.cancel(); // Cleanup on unmount
+    }, [keywords]);
+
 
       useEffect(()=>{
         GetProducts();

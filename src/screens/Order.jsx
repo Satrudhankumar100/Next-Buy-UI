@@ -1,8 +1,37 @@
-import { Box, Button } from '@mui/material';
-import React from 'react';
+import { Box, Button, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import '../styles/order_table.css'; // Import the external CSS file
+import axios from 'axios';
+import { orderUrl } from '../utils/baseUrl';
+import { getUserId } from '../utils/GetUserId';
 
 const Order = () => {
+
+
+  const [orders, setOrders] = useState([])
+
+  if (orders.length == 0) {
+    return (
+      <Box sx={{ background: '#f77', width: '100%', paddingX: 4, paddingY: 2,marginTop:2,marginLeft:2 }}>
+        <Typography sx={{ fontSize: 28, color: '#fff' }}>No Order found</Typography>
+      </Box>
+    )
+  }
+
+  const getAllorder = async()=>{
+
+    try{
+        const response = await axios.post(`${orderUrl}/order/find-all-order/${getUserId}`)
+        console.log(response.data);
+    }catch(err){
+      console.log(err)
+    }
+
+  }
+
+  useEffect(()=>{
+    getAllorder();
+  })
   return (
     <div className="order-container">
       <table className="order-table">

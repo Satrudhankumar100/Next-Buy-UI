@@ -6,6 +6,7 @@ import Login from './screens/Login'
 import Cart from './screens/Cart'
 import Order from './screens/Order'
 import {  Route, Routes } from 'react-router-dom'
+import RazorpayConfig from './components/RazorpayConfig'
 
 
 
@@ -28,7 +29,7 @@ function App() {
           <Route  path='/register' element={<Signup/>}/>
       {/* <Signup /> */}
         </Routes>
-   
+   <RazorpayConfig />
 
 
     </>

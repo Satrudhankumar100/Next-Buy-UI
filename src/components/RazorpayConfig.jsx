@@ -1,4 +1,7 @@
 import React from 'react'
+import { orderUrl } from '../utils/baseUrl';
+import { getUserId } from '../utils/GetUserId';
+import axios from 'axios';
 
 const RazorpayConfig = () => {
 
@@ -27,7 +30,7 @@ async function displayRazorpay() {
     }
 
     // creating a new order
-    const result = await axios.post("http://localhost:5000/payment/orders");
+    const result = await axios.post(`${orderUrl}/payment/total-prod-payment/${getUserId}`);
  
     if (!result) {
         alert("Server error. Are you online?");
@@ -38,7 +41,7 @@ async function displayRazorpay() {
     const { amount, id: order_id, currency } = result.data;
 
     const options = {
-        key: "rzp_test_r6FiJfddJh76SI", // Enter the Key ID generated from the Dashboard
+        key: "rzp_test_rYvQSRxqiPdH5e", // Enter the Key ID generated from the Dashboard
         amount: amount.toString(),
         currency: currency,
         name: "Soumya Corp.",
@@ -53,9 +56,17 @@ async function displayRazorpay() {
                 razorpaySignature: response.razorpay_signature,
             };
 
-            const result = await axios.post("http://localhost:5000/payment/success", data);
+            try{
 
-            alert(result.data.msg);
+                const result = await axios.post(`${orderUrl}/payment/save-payment/${order_id}/${getUserId}`);
+                console.log(result.data);
+                const response = await axios.post(`${orderUrl}/order/create-order`,{userId:getUserId,payId:result.data,addrId:203})
+                console.log("order is generated:"+response.data)
+            }catch(err){
+            console.log(err)     
+            }
+
+            
         },
         prefill: {
             name: "Soumya Dey",

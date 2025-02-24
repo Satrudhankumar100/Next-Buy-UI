@@ -33,6 +33,7 @@ const Cart = () => {
             const response = await axios.get(`${baseUrl}/cart/find-all-cart/${getUserId}`) //add userId
             const data = response.data
             console.log(response.data);
+            if(data.length==0) setMyCarts([])
             setMyCarts(data);
 
         } catch (err) {
@@ -45,8 +46,8 @@ const Cart = () => {
             const response = await axios.get(`${orderUrl}/payment/get-total-prod/${getUserId}`) //add userId
             const data = response.data
             console.log(response.data);
-            if (data.length == 0) setMyCarts([])
-            else setMyCarts(data);
+           
+            setMyAmount(data);
 
         } catch (err) {
             console.log(err)

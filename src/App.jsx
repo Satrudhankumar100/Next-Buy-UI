@@ -5,7 +5,7 @@ import Signup from './screens/Signup'
 import Login from './screens/Login'
 import Cart from './screens/Cart'
 import Order from './screens/Order'
-import {  Route, Routes } from 'react-router-dom'
+import {  Navigate, Route, Routes } from 'react-router-dom'
 import RazorpayConfig from './components/RazorpayConfig'
 
 
@@ -15,18 +15,19 @@ export const SerachContext = createContext()
 function App() {
   
   const [keywords,setKeyword] = useState('')
+  const [flag,setFlag] = useState(false);
 
   
   return (
     <>
 <SerachContext.Provider
-  value ={{keywords,setKeyword}}
+  value ={{keywords,setKeyword,flag,setFlag}}
 >
 
       <Header />
         <Routes>
 
-     
+          <Route path='/' element={<Navigate to="/home" />} />
           <Route  path='/home' element={<Home/>}/>
           <Route  path='/login' element={<Login/>}/>
           <Route  path='/cart' element={<Cart/>}/>

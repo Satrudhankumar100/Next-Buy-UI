@@ -26,7 +26,7 @@ const Login = () => {
       }))
         localStorage.setItem("userId",response.data.user.userId)
         localStorage.setItem("userEmail",response.data.user.userEmail)
-        navigate("/order")
+        navigate("/home")
       }catch(err){
         console.log(err)
       }

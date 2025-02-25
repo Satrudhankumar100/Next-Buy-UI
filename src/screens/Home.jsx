@@ -13,7 +13,8 @@ const Home = () => {
 
       const [products, setProducts] = useState([])
       const { keywords, setKeyword } = useContext(SerachContext);
-      console.log(keywords);
+      
+      
       const searchByCategory = async(category)=>{
         console.log(category)
 
@@ -32,7 +33,7 @@ const Home = () => {
         try{
           const response= await axios.get(`${baseUrl}/product/find-all-prod`)
           setProducts(response.data.data)
-          console.log(response.data)
+         
         }catch(err){
           console.log(err)
         }
@@ -43,7 +44,8 @@ const Home = () => {
         try {
           
             const response = await axios.get(`${baseUrl}/product/search-prod?keyword=${query}`);
-            console.log(response.data);
+            console.log(response.data.data);
+           setProducts(response.data.data);
         } catch (err) {
             console.log(err);
         }

@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CartCards from '../components/CartCards'
 import { Box, Button, Typography } from '@mui/material'
 import BuyNow from '../components/BuyNow';
 import axios from 'axios';
 import baseUrl, { customerUrl, orderUrl } from '../utils/baseUrl';
 import { getUserId } from '../utils/GetUserId';
+import { SerachContext } from '../App';
 
 const Cart = () => {
 
     const [openBuyBox, setOpenBuyBox] = useState(false);
     const [mycarts, setMyCarts] = useState([]);
     const [myAmount, setMyAmount] = useState({ productAmount: 0, gstTax: 0, totalAmount: 0 });
-    const [flag, setFlag] = useState(false);
+    const { flag, setFlag } = useContext(SerachContext)
     const [address, setaddress] = useState({
         country: '',
         state: '',
         city: '',
         pincode: ''
-        
-      });
-    
-      const [isAddressEdit,setAddressEdit] = useState(false);
+
+    });
+
+    const [isAddressEdit, setAddressEdit] = useState(false);
 
 
 
@@ -33,7 +34,7 @@ const Cart = () => {
             const response = await axios.get(`${baseUrl}/cart/find-all-cart/${getUserId}`) //add userId
             const data = response.data
             console.log(response.data);
-            if(data.length==0) setMyCarts([])
+            if (data.length == 0) setMyCarts([])
             setMyCarts(data);
 
         } catch (err) {
@@ -46,7 +47,7 @@ const Cart = () => {
             const response = await axios.get(`${orderUrl}/payment/get-total-prod/${getUserId}`) //add userId
             const data = response.data
             console.log(response.data);
-           
+
             setMyAmount(data);
 
         } catch (err) {
@@ -87,24 +88,27 @@ const Cart = () => {
         }
     }
 
-    const handleProceedToBuy = async ()=>{
-        try{
+    const handleProceedToBuy = async () => {
+        try {
             const response = await axios.get(`${customerUrl}/user/find-addr/${getUserId}`)
             console.log(response.data);
-            if(response.data?.length==0){
-                 setAddressEdit(true);
-                 return
+            if (response.data?.length == 0) {
+                localStorage.removeItem("userAddress")
+                setAddressEdit(true);
+                return
             }
-            setAddressEdit(false); 
-            setaddress(response.data[response.data.length-1])
-    
-        }catch(err){
+            setAddressEdit(false);
+            setaddress(response.data[response.data.length - 1])
+            localStorage.setItem("userAddress", response.data[response.data.length - 1].addId)
+
+
+        } catch (err) {
             console.log(err)
-           
-            
+
+
         }
     }
-    
+
 
     useEffect(() => {
         getListOfCart();
@@ -121,7 +125,7 @@ const Cart = () => {
         }
     }
 
-   
+
 
     return (
         <>
@@ -132,18 +136,18 @@ const Cart = () => {
 
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flexGrow: 0.5, maxHeight: '90vh', overflowY: 'auto' }}>
                                 {
-                                mycarts?.map((data, index) => {
+                                    mycarts?.map((data, index) => {
 
 
-                                    return <CartCards cart={data}
-                                        removeCart={removeCart}
-                                        increment={handleIncrementByOne}
-                                        decrement={handleDecrementByOne}
-                                        qntyValue={handleQntyValue}
-                                    />
+                                        return <CartCards cart={data}
+                                            removeCart={removeCart}
+                                            increment={handleIncrementByOne}
+                                            decrement={handleDecrementByOne}
+                                            qntyValue={handleQntyValue}
+                                        />
 
 
-                                })}
+                                    })}
 
                             </Box>
                     }
@@ -168,8 +172,13 @@ const Cart = () => {
                             </Box>
 
                             <Box>
-                                <Button variant="contained" color="primary" sx={{ background: '#218b3b' }} size="large" fullWidth onClick={() => {setOpenBuyBox(true); handleProceedToBuy();}} >
-                                   Proceed to Buy Now
+                                <Button variant="contained" color="primary" sx={{
+                                    background: '#218b3b', "&.Mui-disabled": {
+                                        background: "gray", // Gray when disabled
+                                        color: "#ffffff", // Optional: Change text color if needed
+                                    },
+                                }} size="large" fullWidth disabled={myAmount?.totalAmount <= 0} onClick={() => { setOpenBuyBox(true); handleProceedToBuy(); }} >
+                                    Proceed to Buy Now
                                 </Button>
                             </Box>
 

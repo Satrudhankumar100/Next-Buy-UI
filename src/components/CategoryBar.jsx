@@ -21,14 +21,17 @@ const CategoryBar = ({searchByCategory}) => {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-       console.log(category)
+    
   const GetAllCategory = async()=>{
     try{
       const response= await axios.get(`${baseUrl}/product/all-category`)
-    console.log();
+  
       
      if(response.data.data.indexOf("T-Shirt"))
       response.data.data.unshift("T-Shirt")
+    
+    
+      
       setCategory(response.data.data);
     
     }catch(err){
@@ -47,7 +50,7 @@ const CategoryBar = ({searchByCategory}) => {
         {category.map((text, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton onClick={()=>searchByCategory(text)}>
-                <ListItemText primary={text}  />
+                <ListItemText primary={text} sx={{textTransform:'capitalize'}} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -67,9 +70,9 @@ const CategoryBar = ({searchByCategory}) => {
         </div>
         {category.filter((data,index)=>index<10).map((data, index) => {
 
-          return (<div onClick={()=>searchByCategory(data)}>
+          return (<div  key={index} onClick={()=>searchByCategory(data)}>
 
-          <Typography key={index}  sx={{ color: '#fff',fontWeight:'bold', cursor: 'pointer', paddingX: 4, paddingY: 1, '&:hover': { border: '1px solid white' } }} >{data}</Typography>
+          <Typography  sx={{ color: '#fff',fontWeight:'bold', cursor: 'pointer', paddingX: 4, paddingY: 1, '&:hover': { border: '1px solid white' } }} >{data}</Typography>
           </div>)
         })}
 

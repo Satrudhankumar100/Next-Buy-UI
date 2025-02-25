@@ -10,13 +10,24 @@ import { IoStarHalfOutline } from 'react-icons/io5';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
 import { getUserId } from '../utils/GetUserId';
+import { SerachContext } from '../App';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cards({product}) {
 
+  const navigatve = useNavigate();
+
+  const {flag,setFlag} = useContext(SerachContext)
   const handleAddToCart = async (prodId)=>{
+        if(getUserId===null) {
+          navigatve("/login")
+          return;
+        }
         try{
           const response = await axios.post(`${baseUrl}/cart/add-cart/${getUserId}`,{prodId:prodId})//add user id
             console.log(response.data);
+            setFlag(!flag)
         }catch(err){
           console.log(err)
         }

@@ -1,14 +1,33 @@
 import { Box, Button, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../styles/order_table.css'; // Import the external CSS file
 import axios from 'axios';
 import { orderUrl } from '../utils/baseUrl';
 import { getUserId } from '../utils/GetUserId';
-
+import moment from "moment";
+import { SerachContext } from '../App';
 const Order = () => {
 
-
+  const { flag, setFlag } = useContext(SerachContext)
   const [orders, setOrders] = useState([])
+
+  
+  const getAllorder = async()=>{
+
+    try{
+        const response = await axios.get(`${orderUrl}/order/get-all-orders/${getUserId}`)
+        console.log(response.data);
+        setOrders(response.data);
+    }catch(err){
+      console.log(err)
+    }
+
+  }
+
+  useEffect(()=>{
+    getAllorder();
+    setFlag(!flag);
+  },[])
 
   if (orders.length == 0) {
     return (
@@ -18,20 +37,10 @@ const Order = () => {
     )
   }
 
-  const getAllorder = async()=>{
 
-    try{
-        const response = await axios.post(`${orderUrl}/order/find-all-order/${getUserId}`)
-        console.log(response.data);
-    }catch(err){
-      console.log(err)
-    }
 
-  }
 
-  useEffect(()=>{
-    getAllorder();
-  })
+
   return (
     <div className="order-container">
       <table className="order-table">
@@ -47,20 +56,25 @@ const Order = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>124568</td>
-            <td>adcd1246d2255s2</td>
-            <td>12/12/2025 01:00</td>
-            <td>Raja Bazar</td>
-            <td>₹123,541</td>
-            <td className="status-done">Done</td>
-            <td>
-              <Box className="action-buttons">
-                <Button variant="contained" color="primary">Details</Button>
-                <Button variant="contained" color="secondary">Download</Button>
-              </Box>
-            </td>
-          </tr>
+          {orders.map((order,index)=>{
+            return (
+              <tr key={index}>
+              <td>{order?.ordId}</td>
+              <td>{order?.payment?.payTnxId}</td>
+              <td>{moment(order?.ordCreatedDate).format('llll')}</td>
+              <td>{order?.ordAddress}</td>
+              <td>₹{order?.payment?.totalAmount}</td>
+              <td className="status-done">{order?.payment?.payStatus?"Yes":"No"}</td>
+              <td>
+                <Box className="action-buttons">
+                  <Button variant="contained" color="primary">Details</Button>
+                  <Button variant="contained" color="secondary">Download</Button>
+                </Box>
+              </td>
+            </tr>
+            );
+          })}
+        
         </tbody>
       </table>
     </div>

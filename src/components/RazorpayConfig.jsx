@@ -1,11 +1,14 @@
 import React from 'react'
 import { orderUrl } from '../utils/baseUrl';
-import { getUserId } from '../utils/GetUserId';
+import { getUserAddress, getUserId } from '../utils/GetUserId';
 import axios from 'axios';
 import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const RazorpayConfig = () => {
 
+    
+    const navigate = useNavigate();
     function loadScript(src) {
         return new Promise((resolve) => {
             const script = document.createElement("script");
@@ -61,8 +64,14 @@ const RazorpayConfig = () => {
 
                     const result = await axios.post(`${orderUrl}/payment/save-payment/${order_id}/${getUserId}`);
                     console.log(result.data);
-                    const response = await axios.post(`${orderUrl}/order/create-order`, { userId: getUserId, payId: result.data, addrId: 203 })
-                    console.log("order is generated:" + response.data)
+                     axios.post(`${orderUrl}/order/create-order`, { userId: getUserId, payId: result.data, addrId: getUserAddress }).then((response)=>{
+                        console.log("order is generated:" + response.data)
+                        navigate("/order")
+                     })
+                    
+
+                    
+
                 } catch (err) {
                     console.log(err)
                 }

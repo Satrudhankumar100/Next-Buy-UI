@@ -28,9 +28,9 @@ import { SerachContext } from '../App';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    backgroundColor: '#fff',
     '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
+        backgroundColor:'#fff',
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
@@ -70,8 +70,9 @@ export default function Header() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [category, setCategory] = useState("All");
-    const {keywords, setKeyword} = useContext(SerachContext);
+    const {keywords, setKeyword,flag} = useContext(SerachContext);
     const [cartItmes,setCartItmes] = useState(0);
+    
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -88,6 +89,14 @@ export default function Header() {
         setAnchorEl(null);
         handleMobileMenuClose();
     };
+
+    const handleLogout = ()=>{
+        localStorage.clear();
+        window.location.reload();
+    }
+
+   
+
 
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
@@ -112,8 +121,17 @@ export default function Header() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            {getUserId!==null?
+                <>
+                    
+                    <MenuItem><Link to={"/order"}> Order</Link></MenuItem>
+                    <MenuItem onClick={handleLogout}> Logout</MenuItem>
+                </>
+            :<>
+            <MenuItem ><Link to={"/login"}>Login</Link></MenuItem>
+            <MenuItem><Link to={"/register"}>Create Account</Link></MenuItem>
+            </>}
+           
         </Menu>
     );
 
@@ -187,7 +205,7 @@ export default function Header() {
 
     useEffect(()=>{
         handleCartCount();
-    },[])
+    },[flag])
   
 
     return (
@@ -263,19 +281,18 @@ export default function Header() {
 
                                         }}
                                     >
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                        <MenuItem value={'All'}>ALL</MenuItem>
+                                        
                                     </Select>
                                 </FormControl>
                             </Box>
                             <Box>
-                                <SearchIconWrapper>
+                                <SearchIconWrapper sx={{background:'#000'}}>
                                     <IoSearch style={{ color: '#000' }} />
                                 </SearchIconWrapper>
                             </Box>
 
-                            <StyledInputBase placeholder="Search…" value={keywords} onChange={(e) => setKeyword(e.target.value)} sx={{ color: '#000' }} inputProps={{ "aria-label": "search" }} />
+                            <StyledInputBase placeholder="Search…" value={keywords} onChange={(e) => setKeyword(e.target.value)} sx={{ color: '#000',background:'#fff' }} inputProps={{ "aria-label": "search" }} />
                         </Search>
                     </Box>
 

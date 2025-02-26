@@ -46,6 +46,7 @@ const BuyNow = ({ handleClose, status,address,isAddressEdit, setAddressEdit,seta
             const response = await axios.post(`${customerUrl}/user/save-addr/${getUserId}`,address) //add user id
             console.log(response.data)
             setAddressEdit(false);
+            window.location.reload();
          }catch(err){
             console.log(err)
          }

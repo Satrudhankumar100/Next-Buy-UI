@@ -64,7 +64,7 @@ const RazorpayConfig = () => {
 
                     const result = await axios.post(`${orderUrl}/payment/save-payment/${order_id}/${getUserId}`);
                     console.log(result.data);
-                     axios.post(`${orderUrl}/order/create-order`, { userId: getUserId, payId: result.data, addrId: getUserAddress }).then((response)=>{
+                     axios.post(`${orderUrl}/order/create-order`, { userId: getUserId, payId: result.data, addrId: localStorage.getItem("userAddress") }).then((response)=>{
                         console.log("order is generated:" + response.data)
                         navigate("/order")
                      })

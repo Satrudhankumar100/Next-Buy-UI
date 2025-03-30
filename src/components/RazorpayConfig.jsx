@@ -45,7 +45,7 @@ const RazorpayConfig = () => {
         const { amount, id: order_id, currency } = result.data;
 
         const options = {
-            key: "rzp_test_rYvQSRxqiPdH5e", // Enter the Key ID generated from the Dashboard
+            key: "rozar_pay_key", // Enter the Key ID generated from the Dashboard
             amount: amount.toString(),
             currency: currency,
             name: "Soumya Corp.",
